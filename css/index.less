@@ -1,0 +1,302 @@
+/**
+  *虽然移动端(安卓&ios)上的浏览器大部分都是webkit内核的,但是由于很多手机操作系统过低(尤其是安卓手机)
+  *导致很多css3新特性不能有效识别,此时我们使用的大部分css3属性都要写两套才能兼容
+  *-webkit-animation / animation
+  *加前缀的在前,不加的在后
+  *
+  *兼容太麻烦了,有js插件搞定
+  *(prefixfree.min.js)导入插件后,它会帮我们把所有需要加前缀的都加上
+ */
+@import "reset.min.less";
+html{
+  //640px设计稿尺寸中: 1rem = 100px
+  font-size: 100px;
+}
+
+html,body{
+  height: 100%;
+  overflow: hidden;
+  background: #f4f4f4;
+  position: relative;
+  z-index: -4;
+}
+//mainBox的意义在于让pc端控制页面最大宽度 640px 若超出,页面居中
+.mainBox{
+  margin: 0 auto;
+  max-width: 640px;
+  height: 100%;
+  background: #fff;
+  position: relative;
+  z-index: -3;
+}
+//公共样式
+.loadingBox, .phoneBox, .messageBox{
+  display: none;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+//loading
+.loadingBox{
+  background: #000;
+
+//  less语法
+  .title{
+    position: absolute;
+    left: 0;
+    top: 50%;
+    //2.2rem =  0.7rem(正中间) + 1.5rem (居中间靠上的位移)
+    margin-top: -2.2rem;
+    //position定位后如果不加宽度默认是自适应
+    width: 100%;
+    height: 1.4rem;
+    color: #fff;
+    h1{
+      font-size: .5rem;
+      line-height: .75rem;
+      text-align: center;
+    }
+    h2{
+      margin-top: .2rem;
+      line-height: .45rem;
+      text-align: center;
+      letter-spacing: .04rem;
+    }
+  }
+
+  .progress{
+    position: absolute;
+    width: 4.6rem;
+    height: .3rem;
+    background: #fff;
+    top: 50%;
+    left: 50%;
+    margin: .85rem 0 0 -2.3rem;
+
+    .current{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: -webkit-linear-gradient(left bottom,#5cb85c 0%,#5cb85c 25%,#74c274 25%,#74c274 50%,#5cb85c 50%,#5cb85c 75%,#74c274 75%,#74c274 100%);
+      background: linear-gradient(left bottom,#5cb85c 0%,#5cb85c 25%,#74c274 25%,#74c274 50%,#5cb85c 50%,#5cb85c 75%,#74c274 75%,#74c274 100%);
+      background-size: .3rem .3rem;
+      //兼容处理
+      animation: loadingMove .3s linear 0s infinite both;
+      //给current设置一个过渡动画:当我们在js中控制它的宽度在变化的时候,给其一个平稳的过渡动画效果,而不是生硬的改变
+      transition: all .3s linear 0s;
+    }
+  }
+}
+@keyframes loadingMove {
+  0%{
+    background-position: 0 0 ;
+  }
+  100%{
+    background-position: 0 -.3rem ;
+  }
+}
+
+//phone区域
+.phoneBox{
+  background: url("../img/zf_phoneBg.jpg") no-repeat;
+  background-size: cover;
+  z-index: -2;
+  h2{
+    margin-top: .5rem;
+    text-align: center;
+
+    img{
+      display: inline-block;
+      width: 2.62rem;
+      height: 1.25rem;
+    }
+
+    span{
+      display: none;
+      margin-top: .1rem;
+      line-height: .3rem;
+      font-size: .3rem;
+      color: #fff;
+      letter-spacing: .05rem;
+    }
+  }
+
+  .answer{
+    position: absolute;
+    width: 5.2rem;
+    height: 3.6rem;
+    left: 50%;
+    bottom: .3rem;
+    margin-left: -2.6rem;
+    background: url("../img/zf_phoneListen.png") no-repeat;
+    background-size: 100% 100%;
+
+    //=>初始位置是在phone底部看不见 overflow:hidden  当点击接听按钮后,控制它从底下出来即可(js中改变样式)
+    .markMove{
+      position: absolute;
+      right: -.06rem;
+      bottom: .48rem;
+      z-index:-1;
+      box-sizing: border-box;
+      width: 1.6rem;
+      height: 1.6rem;
+      border-radius: 50%;
+      border: .03rem solid #00ff00;
+      animation: answerMove 1s linear 0s infinite both;
+    }
+    .markLink{
+      //把markMove的样式继承过来使用
+      .markMove;
+      z-index: 1;
+      animation: none;
+      border: none;
+      border-radius: 0;
+    }
+  }
+
+  .hangUp{
+    position: absolute;
+    left: 50%;
+    bottom: .3rem;
+    margin-left: -2.6rem;
+    width: 5.2rem;
+    height: 6.59rem;
+    background: url("../img/zf_phoneDetail.png") no-repeat;
+    background-size: 100% 100%;
+    //我们可以基于transform改变样式的尽量不要使用传统样式属性,transform开启了浏览器的硬件加速,性能牛逼
+    transform: translateY(6.89rem);
+    transition: all .3s;
+
+    .markLink{
+      position: absolute;
+      left: 50%;
+      bottom: .26rem;
+      z-index: 1;
+      margin-left: -.8rem;
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+}
+@keyframes answerMove {
+  from{
+    //缩放
+    transform: scale(1.2);
+  }
+  to{
+    transform: scale(0);
+  }
+}
+
+//message区域
+.messageBox{
+  background: #eaeaea;
+
+  .wrapper{
+    position: absolute;
+    top: .2rem;
+    left: 0;
+    width: 100%;
+    transition: all .3s;
+
+    li{
+      position: relative;
+      max-width: 3.6rem;
+      padding: .25rem;
+      margin-bottom: .4rem;
+      border-radius: .1rem;
+      line-height: .4rem;
+      font-size: .26rem;
+      opacity: 0;
+      .pic{
+        position: absolute;
+        top: 0;
+        width: .82rem;
+        height: .82rem;
+        border-radius: 50%;
+      }
+      .arrow{
+        position: absolute;
+        top: .2rem;
+        width: .1rem;
+        height: .2rem;
+      }
+      &.active{
+        animation: messageListMove .3s linear both;
+      }
+      &.self{
+        float: left;
+        margin-left: 1.25rem;
+        background: #fff;
+        border: .02rem solid #cacaca;
+        .pic{
+          left: -1rem;
+        }
+        .arrow{
+          left: -.1rem;
+          background: url("../img/zf_messageArrow1.png") no-repeat;
+          background-size: 100% 100%;
+        }
+      }
+      &.interviewer{
+        float: right;
+        margin-right: 1.25rem;
+        background: #A2E45C;
+        border: .02rem solid #96b474;
+        .pic{
+          right: -1rem;
+        }
+        .arrow{
+          right: -.1rem;
+          background: url("../img/zf_messageArrow2.png") no-repeat;
+          background-size: 100% 100%;
+        }
+      }
+    }
+  }
+
+  .keyBoard{
+    position: absolute;
+    box-sizing: border-box;
+    left: 0;
+    bottom: -.5rem;
+    width: 100%;
+    height: 5.16rem;
+    background: url("../img/zf_messageKeyboard.png") no-repeat;
+    background-size: 100% 100%;
+    //初始位置
+    transform: translateY(3.7rem);
+    transition: all .3s;
+    span{
+      position: absolute;
+      left: .9rem;
+      top: .35rem;
+      font-size: .25rem;
+      line-height: .4rem;
+    }
+
+    .submit{
+      display: none;
+      position: absolute;
+      right: .1rem;
+      bottom: .6rem;
+      width: 1.47rem;
+      height: .74rem;
+      background: url("../img/zf_messageChat.png") no-repeat;
+      background-size: 100% 100%;
+    }
+  }
+}
+
+@keyframes messageListMove {
+  from {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+  to{
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

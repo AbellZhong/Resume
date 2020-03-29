@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet/less" href="./css/index.less">
+    <script src="./js/less-2.5.3.min.js"></script>
+    <!--    prefixfree插件 用来做兼容处理-->
+    <script src="./js/prefixfree.min.js"></script>
+    <!--    计算Rem-->
+    <script>
+        //根据当前设备的宽度,动态计算出rem的换算比例,实现页面中元素的等比缩放
+        (function anonymous() {
+            let computedRem = function () {
+                //获取当前屏幕的宽度 curW 设计稿宽度desW
+                let curW = document.documentElement.clientWidth,
+                    desW = 640;
+                //根据比例计算出html字体大小
+                if (curW > 640) {
+                    document.documentElement.style.fontSize = '100px';
+                    return;
+                }
+                document.documentElement.style.fontSize = curW / desW * 100 + 'px';
+            };
+            computedRem();
+            //当页面大小发生改变了(resize),我们重新计算rem
+            window.addEventListener('resize', computedRem);
+        })(window);
+    </script>
+    <title>移动端简历</title>
+</head>
+<body>
+<main class="mainBox">
+    <!--    外层套一层mainBox的目的是为了控制当前页面最大宽度,防止把做好的页面在
+            pc端预览的时候满屏展示,这样字体和盒子大小等被肆意拉伸-->
+    <!--    loading区域-->
+    <section class="loadingBox">
+        <!--        标题-->
+        <div class="title">
+            <h1>个人简历</h1>
+            <h2>H5场景交互型简历</h2>
+        </div>
+        <!--        进度条-->
+        <div class="progress">
+            <!--            当前进度条-->
+            <div class="current"></div>
+        </div>
+    </section>
+
+    <!--    phone区域-->
+    <section class="phoneBox">
+        <h2>
+            <img src="img/zf_phoneLogo.png" alt="">
+            <span>00:00</span>
+        </h2>
+        <div class="answer">
+            <div class="markMove"></div>
+            <a href="javascript:;" class="markLink"></a>
+        </div>
+        <div class="hangUp">
+            <a href="javascript:;" class="markLink"></a>
+        </div>
+
+        <!--        audio-->
+        <audio src="audio/bell.mp3" loop preload="none" id="answerBell"></audio>
+        <audio src="audio/say.mp3" preload="none" id="introduce"></audio>
+    </section>
+
+    <!--    message区域-->
+    <section class="messageBox">
+        <ul class="wrapper clearfix">
+            <li class="self">
+                <i class="arrow"></i>
+                <img src="img/zf_messageStudent.png" alt="" class="pic">
+                面试官您好,我叫钟燊超,来自于浙江绍兴,黑龙江工程学院在读大三学生,学习的是计算机科学与技术专业.大一暑假开始接触前端,平时一直用mac进行开发.对多端混合开发模式很感兴趣,希望在这方面能够深造!
+            </li>
+            <li class="interviewer">
+                <i class="arrow"></i>
+                <img src="img/zf_messageLogo.png" alt="" class="pic">
+                介绍一下自己擅长的技术吧!
+            </li>
+            <!--后期会手动在这个位置增加一条新的记录-->
+            <li class="self">
+                <i class="arrow"></i>
+                <img src="img/zf_messageStudent.png" alt="" class="pic">
+                对ES6,promise,发布订阅等设计模式均有了解!
+            </li>
+            <li class="interviewer">
+                <i class="arrow"></i>
+                <img src="img/zf_messageLogo.png" alt="" class="pic">
+                平时主要用哪个框架作为技术栈呢?
+            </li>
+            <li class="self">
+                <i class="arrow"></i>
+                <img src="img/zf_messageStudent.png" alt="" class="pic">
+                刚开始是以vue入门的,后来发现更喜欢React!
+            </li>
+            <li class="self">
+                <i class="arrow"></i>
+                <img src="img/zf_messageStudent.png" alt="" class="pic">
+                主要用React进行开发,对jsx\mvc\diff算法等有所了解.
+            </li>
+            <li class="self">
+                <i class="arrow"></i>
+                <img src="img/zf_messageStudent.png" alt="" class="pic">
+                如果公司需要用Vue开发,我也可以重新学习vue!
+            </li>
+            <li class="interviewer">
+                <i class="arrow"></i>
+                <img src="img/zf_messageLogo.png" alt="" class="pic">
+                会webpack吗?
+            </li>
+            <li class="self">
+                <i class="arrow"></i>
+                <img src="img/zf_messageStudent.png" alt="" class="pic">
+                平时项目都是基于脚手架搭建的,具体配置了解一些,不多!
+            </li>
+        </ul>
+        <div class="keyBoard">
+            <span></span>
+            <a href="javascript:;" class="submit"></a>
+        </div>
+
+        <audio src="./audio/music.mp3" preload="none" loop id="magicMusic"></audio>
+    </section>
+</main>
+<!--import js-->
+<script src="js/zepto.min.js"></script>
+<script src="./js/index.js"></script>
+</body>
+</html>
